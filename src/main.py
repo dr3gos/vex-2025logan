@@ -32,14 +32,24 @@ wait(30, MSEC)
 
 # Driving function
 
-def slamdunk():
-    pass
-    
-def intake():
-    pass
+def slamdunk(direction):
+    slamdunkMotor.set_velocity(100, PERCENT)
+    intakeMotor.set_velocity(100, PERCENT)
+    slamdunkMotor.spin(direction)
+    intakeMotor.spin(direction)
+
+def slamdunkStop():
+    slamdunkMotor.stop()
+    intakeMotor.stop()
     
 def trap():
-    pass
+    if controller_1.buttonR1.pressing():
+        trapMotor.set_velocity(100, PERCENT)
+        trapMotor.spin(FORWARD)
+    if controller_1.buttonL1.pressing():
+        trapMotor.set_velocity(100, PERCENT)
+        trapMotor.spin(REVERSE)
+
 
 def move(direction, power, duration):
 # 1 = forward, 2 = backward, 3 = left, 4 = right
@@ -169,6 +179,10 @@ def driving():
     rightRear.spin(FORWARD)
 
 
+# init variables
+forwardToggle = 0
+backwardToggle = 0
+
 # Main loop
 while 1:
     if controller_1.buttonRight.pressing():
@@ -177,4 +191,14 @@ while 1:
     if controller_1.buttonLeft.pressing():
         while 1:
             driving()
+            trap()
+            if controller_1.buttonR2.pressing():
+                if forwardToggle == 0:
+                    slamdunk(FORWARD)
+                    forwardToggle = 1 - forwardToggle
+            if controller_1.buttonL2.pressing():
+                if backwardToggle == 0:
+                    slamdunk(REVERSE)
+                    backwardToggle = 1 - backwardToggle
+                    
     wait(5, MSEC)
