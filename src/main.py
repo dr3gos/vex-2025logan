@@ -16,13 +16,13 @@ brain=Brain()
 brain.screen.print("Hello V5")
 
 controller_1 = Controller(PRIMARY)
-leftRear = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)       
-rightRear = Motor(Ports.PORT9, GearSetting.RATIO_18_1, False)       
-leftFront = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)       
-rightFront = Motor(Ports.PORT4, GearSetting.RATIO_18_1, False)
-trapMotor = Motor(Ports.PORT1, GearSetting.RATIO_18_1, False)
-intakeMotor = Motor(Ports.PORT2, GearSetting.RATIO_18_1, False)
-slamdunkMotor = Motor(Ports.PORT3, GearSetting.RATIO_18_1, False)
+# leftRear = Motor(Ports.PORT10, GearSetting.RATIO_18_1, True)       
+# rightRear = Motor(Ports.PORT9, GearSetting.RATIO_18_1, False)       
+# leftFront = Motor(Ports.PORT5, GearSetting.RATIO_18_1, True)       
+# rightFront = Motor(Ports.PORT4, GearSetting.RATIO_18_1, False)
+trapMotor = Motor(Ports.PORT20, GearSetting.RATIO_18_1, False)
+intakeMotor = Motor(Ports.PORT9, GearSetting.RATIO_18_1, False)
+slamdunkMotor = Motor(Ports.PORT10, GearSetting.RATIO_18_1, False)
 # sucker = Motor(Ports.PORT1, GearSetting.RATIO_18_1, False)
 # pneumatic = DigitalOut(brain.three_wire_port.a)
 
@@ -32,151 +32,159 @@ wait(30, MSEC)
 
 # Driving function
 
-def slamdunk(direction):
-    slamdunkMotor.set_velocity(100, PERCENT)
-    intakeMotor.set_velocity(100, PERCENT)
-    slamdunkMotor.spin(direction)
-    intakeMotor.spin(direction)
 
-def slamdunkStop():
-    slamdunkMotor.stop()
-    intakeMotor.stop()
+
+def slamdunk():
+    if controller_1.buttonR2.pressing():
+        power = 100
+    elif controller_1.buttonL2.pressing():
+        power = -87.5
+    else:
+        power = 0
+    slamdunkMotor.set_velocity(power, PERCENT)
+    intakeMotor.set_velocity(power, PERCENT)
+    slamdunkMotor.spin(FORWARD)
+    intakeMotor.spin(FORWARD)
+
     
 def trap():
     if controller_1.buttonR1.pressing():
-        trapMotor.set_velocity(100, PERCENT)
-        trapMotor.spin(FORWARD)
-    if controller_1.buttonL1.pressing():
-        trapMotor.set_velocity(100, PERCENT)
-        trapMotor.spin(REVERSE)
+        power = 100
+    elif controller_1.buttonL1.pressing():
+        power = -100
+    else:
+        power = 0
+
+    trapMotor.set_velocity(power, PERCENT)
+    trapMotor.spin(FORWARD)
 
 
-def move(direction, power, duration):
-# 1 = forward, 2 = backward, 3 = left, 4 = right
-    if direction == 1:
-        leftFront.set_velocity(power, PERCENT)
-        rightFront.set_velocity(power, PERCENT)
-        leftRear.set_velocity(power, PERCENT)
-        rightRear.set_velocity(power, PERCENT)
+# def move(direction, power, duration):
+# # 1 = forward, 2 = backward, 3 = left, 4 = right
+#     if direction == 1:
+#         leftFront.set_velocity(power, PERCENT)
+#         rightFront.set_velocity(power, PERCENT)
+#         leftRear.set_velocity(power, PERCENT)
+#         rightRear.set_velocity(power, PERCENT)
 
-        leftFront.spin(REVERSE)
-        rightFront.spin(REVERSE)
-        leftRear.spin(REVERSE)
-        rightRear.spin(REVERSE)
-        wait(duration, MSEC)
-        leftFront.stop()
-        rightFront.stop()
-        leftRear.stop()
-        rightRear.stop()
-    if direction == 2:
-        leftFront.set_velocity(power, PERCENT)
-        rightFront.set_velocity(power, PERCENT)
-        leftRear.set_velocity(power, PERCENT)
-        rightRear.set_velocity(power, PERCENT)
+#         leftFront.spin(REVERSE)
+#         rightFront.spin(REVERSE)
+#         leftRear.spin(REVERSE)
+#         rightRear.spin(REVERSE)
+#         wait(duration, MSEC)
+#         leftFront.stop()
+#         rightFront.stop()
+#         leftRear.stop()
+#         rightRear.stop()
+#     if direction == 2:
+#         leftFront.set_velocity(power, PERCENT)
+#         rightFront.set_velocity(power, PERCENT)
+#         leftRear.set_velocity(power, PERCENT)
+#         rightRear.set_velocity(power, PERCENT)
 
-        leftFront.spin(FORWARD)
-        rightFront.spin(FORWARD)
-        leftRear.spin(FORWARD)
-        rightRear.spin(FORWARD)
-        wait(duration, MSEC)
-        leftFront.stop()
-        rightFront.stop()
-        leftRear.stop()
-        rightRear.stop()
-    if direction == 3:
-        leftFront.set_velocity(power, PERCENT)
-        rightFront.set_velocity(power, PERCENT)
-        leftRear.set_velocity(power, PERCENT)
-        rightRear.set_velocity(power, PERCENT)
+#         leftFront.spin(FORWARD)
+#         rightFront.spin(FORWARD)
+#         leftRear.spin(FORWARD)
+#         rightRear.spin(FORWARD)
+#         wait(duration, MSEC)
+#         leftFront.stop()
+#         rightFront.stop()
+#         leftRear.stop()
+#         rightRear.stop()
+#     if direction == 3:
+#         leftFront.set_velocity(power, PERCENT)
+#         rightFront.set_velocity(power, PERCENT)
+#         leftRear.set_velocity(power, PERCENT)
+#         rightRear.set_velocity(power, PERCENT)
 
-        leftFront.spin(FORWARD) #f
-        rightFront.spin(REVERSE) #r
-        leftRear.spin(FORWARD) #f
-        rightRear.spin(REVERSE) #r
-        wait(duration, MSEC)
-        leftFront.stop()
-        rightFront.stop()
-        leftRear.stop()
-        rightRear.stop()
-    if direction == 4:
-        leftFront.set_velocity(power, PERCENT)
-        rightFront.set_velocity(power, PERCENT)
-        leftRear.set_velocity(power, PERCENT)
-        rightRear.set_velocity(power, PERCENT)
+#         leftFront.spin(FORWARD) #f
+#         rightFront.spin(REVERSE) #r
+#         leftRear.spin(FORWARD) #f
+#         rightRear.spin(REVERSE) #r
+#         wait(duration, MSEC)
+#         leftFront.stop()
+#         rightFront.stop()
+#         leftRear.stop()
+#         rightRear.stop()
+#     if direction == 4:
+#         leftFront.set_velocity(power, PERCENT)
+#         rightFront.set_velocity(power, PERCENT)
+#         leftRear.set_velocity(power, PERCENT)
+#         rightRear.set_velocity(power, PERCENT)
 
-        leftFront.spin(REVERSE)
-        rightFront.spin(FORWARD)
-        leftRear.spin(REVERSE)
-        rightRear.spin(FORWARD)
-        wait(duration, MSEC)
-        leftFront.stop()
-        rightFront.stop()
-        leftRear.stop()
-        rightRear.stop()
-    if direction == 5:
-        leftFront.set_velocity(power, PERCENT)
-        rightFront.set_velocity(power, PERCENT)
-        leftRear.set_velocity(power, PERCENT)
-        rightRear.set_velocity(power, PERCENT)
+#         leftFront.spin(REVERSE)
+#         rightFront.spin(FORWARD)
+#         leftRear.spin(REVERSE)
+#         rightRear.spin(FORWARD)
+#         wait(duration, MSEC)
+#         leftFront.stop()
+#         rightFront.stop()
+#         leftRear.stop()
+#         rightRear.stop()
+#     if direction == 5:
+#         leftFront.set_velocity(power, PERCENT)
+#         rightFront.set_velocity(power, PERCENT)
+#         leftRear.set_velocity(power, PERCENT)
+#         rightRear.set_velocity(power, PERCENT)
 
-        leftFront.spin(FORWARD)
-        rightFront.spin(REVERSE)
-        leftRear.spin(REVERSE)
-        rightRear.spin(FORWARD)
-        wait(duration, MSEC)
-        leftFront.stop()
-        rightFront.stop()
-        leftRear.stop()
-        rightRear.stop()
-    if direction == 6:
-        leftFront.set_velocity(power, PERCENT)
-        rightFront.set_velocity(power, PERCENT)
-        leftRear.set_velocity(power, PERCENT)
-        rightRear.set_velocity(power, PERCENT)
+#         leftFront.spin(FORWARD)
+#         rightFront.spin(REVERSE)
+#         leftRear.spin(REVERSE)
+#         rightRear.spin(FORWARD)
+#         wait(duration, MSEC)
+#         leftFront.stop()
+#         rightFront.stop()
+#         leftRear.stop()
+#         rightRear.stop()
+#     if direction == 6:
+#         leftFront.set_velocity(power, PERCENT)
+#         rightFront.set_velocity(power, PERCENT)
+#         leftRear.set_velocity(power, PERCENT)
+#         rightRear.set_velocity(power, PERCENT)
 
-        leftFront.spin(REVERSE)
-        rightFront.spin(FORWARD)
-        leftRear.spin(FORWARD)
-        rightRear.spin(REVERSE)
-        wait(duration, MSEC)
-        leftFront.stop()
-        rightFront.stop()
-        leftRear.stop()
-        rightRear.stop()
+#         leftFront.spin(REVERSE)
+#         rightFront.spin(FORWARD)
+#         leftRear.spin(FORWARD)
+#         rightRear.spin(REVERSE)
+#         wait(duration, MSEC)
+#         leftFront.stop()
+#         rightFront.stop()
+#         leftRear.stop()
+#         rightRear.stop()
 
-def drivingsimple():
-    speed = -controller_1.axis3.position() #updown left
-    # strafe = controller_1.axis4.position() #leftright left
-    turn = controller_1.axis1.position()  #leftright right
+# def drivingsimple():
+#     speed = -controller_1.axis3.position() #updown left
+#     # strafe = controller_1.axis4.position() #leftright left
+#     turn = controller_1.axis1.position()  #leftright right
 
-    leftRearPower = (speed - turn)
-    rightRearPower = (speed + turn)
+#     leftRearPower = (speed - turn)
+#     rightRearPower = (speed + turn)
 
-    leftRear.set_velocity(leftRearPower, PERCENT)
-    rightRear.set_velocity(rightRearPower, PERCENT)
+#     leftRear.set_velocity(leftRearPower, PERCENT)
+#     rightRear.set_velocity(rightRearPower, PERCENT)
 
-    leftRear.spin(FORWARD)
-    rightRear.spin(FORWARD)
+#     leftRear.spin(FORWARD)
+#     rightRear.spin(FORWARD)
 
-def driving():
-    turn = -controller_1.axis1.position() #updown left
-    speed = -controller_1.axis3.position() #leftright left
-    strafe = -controller_1.axis4.position() #lefright right
+# def driving():
+#     turn = -controller_1.axis1.position() #updown left
+#     speed = -controller_1.axis3.position() #leftright left
+#     strafe = -controller_1.axis4.position() #lefright right
 
-    leftFrontPower = speed + turn + strafe;
-    rightFrontPower = speed - turn - strafe;
-    leftRearPower = speed + turn - strafe;
-    rightRearPower = speed - turn + strafe;
+#     leftFrontPower = speed + turn + strafe;
+#     rightFrontPower = speed - turn - strafe;
+#     leftRearPower = speed + turn - strafe;
+#     rightRearPower = speed - turn + strafe;
 
-    leftFront.set_velocity(leftFrontPower, PERCENT)
-    rightFront.set_velocity(rightFrontPower, PERCENT)
-    leftRear.set_velocity(leftRearPower, PERCENT)
-    rightRear.set_velocity(rightRearPower, PERCENT)
+#     leftFront.set_velocity(leftFrontPower, PERCENT)
+#     rightFront.set_velocity(rightFrontPower, PERCENT)
+#     leftRear.set_velocity(leftRearPower, PERCENT)
+#     rightRear.set_velocity(rightRearPower, PERCENT)
 
-    leftFront.spin(FORWARD)
-    rightFront.spin(FORWARD)
-    leftRear.spin(FORWARD)
-    rightRear.spin(FORWARD)
+#     leftFront.spin(FORWARD)
+#     rightFront.spin(FORWARD)
+#     leftRear.spin(FORWARD)
+#     rightRear.spin(FORWARD)
 
 
 # init variables
@@ -190,15 +198,16 @@ while 1:
         # autonomous()
     if controller_1.buttonLeft.pressing():
         while 1:
-            driving()
+            # driving()
             trap()
-            if controller_1.buttonR2.pressing():
-                if forwardToggle == 0:
-                    slamdunk(FORWARD)
-                    forwardToggle = 1 - forwardToggle
-            if controller_1.buttonL2.pressing():
-                if backwardToggle == 0:
-                    slamdunk(REVERSE)
-                    backwardToggle = 1 - backwardToggle
+            slamdunk()
+            # if controller_1.buttonR2.pressing():
+            #     if forwardToggle == 0:
+            #         slamdunk(FORWARD)
+            #         forwardToggle = 1 - forwardToggle
+            # if controller_1.buttonL2.pressing():
+            #     if backwardToggle == 0:
+            #         slamdunk(REVERSE)
+            #         backwardToggle = 1 - backwardToggle
                     
-    wait(5, MSEC)
+wait(5, MSEC)
