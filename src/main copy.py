@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------------- #
 #                                                                              #
 # 	Module:       main2.py                                                     #
-# 	Project:      AISB VEX 24'-25' Logan                                       #
+# 	Project:      AISB VEX 24'-25' Unc Tyrone                                  #
 # 	Author:       Dragos S.                                                    #
 # 	Created:      30/01/2025                                                   #
 # 	Description:  Massive optimizations                                        #
@@ -88,28 +88,23 @@ def intake_spinner_control():
     last_buttons['L2'] = L2
     last_buttons['R2'] = R2
 
-# ...existing code...
 def trapper_control():
     global trapper_toggled, last_buttons
     
     A = controller.buttonA.pressing()
     B = controller.buttonB.pressing()
-    trapper.set_velocity(100)
-
+    
     if A and not last_buttons['A']:
         trapper_toggled = not trapper_toggled
-        if trapper_toggled:
-            trapper.spin_to_position(300, DEGREES, 100, PERCENT)
-        else:
-            trapper.spin_to_position(0, DEGREES, 100, PERCENT)
     
     if B:
         trapper.spin(REVERSE, 100, PERCENT)
+    elif trapper_toggled:
+        trapper.spin(FORWARD, 100, PERCENT)
     else:
         trapper.stop()
     
     last_buttons['A'] = A
-# ...existing code...
 
 def autonomous():
     # !!! Autonomous code goes here !!!
