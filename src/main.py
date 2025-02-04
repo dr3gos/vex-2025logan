@@ -113,6 +113,8 @@ def trapper_control():
 
 def autonomous():
     # !!! Autonomous code goes here !!!
+    move(6, 50, 1000)  # Move forward at 50% power for 1 second
+
     pass
     
 
@@ -120,6 +122,109 @@ def driver_control():
     drive_control()
     intake_spinner_control()
     trapper_control()
+
+# ...existing code...
+def move(direction, power, duration):
+    # 1 = forward, 2 = backward, 3 = left, 4 = right
+    # 1 = turn left, 2 = turn right, 3 = forward, 4 = backward, 5 = strafe left, 6 = strafe right
+    if direction == 1:
+        left_motorF.set_velocity(power, PERCENT)
+        right_motorF.set_velocity(power, PERCENT)
+        left_motorB.set_velocity(power, PERCENT)
+        right_motorB.set_velocity(power, PERCENT)
+
+        left_motorF.spin(REVERSE)
+        right_motorF.spin(REVERSE)
+        left_motorB.spin(REVERSE)
+        right_motorB.spin(REVERSE)
+        wait(duration, MSEC)
+        left_motorF.stop()
+        right_motorF.stop()
+        left_motorB.stop()
+        right_motorB.stop()
+    if direction == 2:
+        left_motorF.set_velocity(power, PERCENT)
+        right_motorF.set_velocity(power, PERCENT)
+        left_motorB.set_velocity(power, PERCENT)
+        right_motorB.set_velocity(power, PERCENT)
+
+        left_motorF.spin(FORWARD)
+        right_motorF.spin(FORWARD)
+        left_motorB.spin(FORWARD)
+        right_motorB.spin(FORWARD)
+        wait(duration, MSEC)
+        left_motorF.stop()
+        right_motorF.stop()
+        left_motorB.stop()
+        right_motorB.stop()
+    if direction == 3:
+        left_motorF.set_velocity(power, PERCENT)
+        right_motorF.set_velocity(power, PERCENT)
+        left_motorB.set_velocity(power, PERCENT)
+        right_motorB.set_velocity(power, PERCENT)
+
+        left_motorF.spin(FORWARD)
+        right_motorF.spin(REVERSE)
+        left_motorB.spin(FORWARD)
+        right_motorB.spin(REVERSE)
+        wait(duration, MSEC)
+        left_motorF.stop()
+        right_motorF.stop()
+        left_motorB.stop()
+        right_motorB.stop()
+    if direction == 4:
+        left_motorF.set_velocity(power, PERCENT)
+        right_motorF.set_velocity(power, PERCENT)
+        left_motorB.set_velocity(power, PERCENT)
+        right_motorB.set_velocity(power, PERCENT)
+
+        left_motorF.spin(REVERSE)
+        right_motorF.spin(FORWARD)
+        left_motorB.spin(REVERSE)
+        right_motorB.spin(FORWARD)
+        wait(duration, MSEC)
+        left_motorF.stop()
+        right_motorF.stop()
+        left_motorB.stop()
+        right_motorB.stop()
+    if direction == 5:
+        left_motorF.set_velocity(power, PERCENT)
+        right_motorF.set_velocity(power, PERCENT)
+        left_motorB.set_velocity(power, PERCENT)
+        right_motorB.set_velocity(power, PERCENT)
+
+
+        left_motorF.spin(FORWARD)
+        right_motorF.spin(FORWARD)
+        left_motorB.spin(FORWARD)
+        right_motorB.spin(REVERSE)
+        wait(duration, MSEC)
+        left_motorF.stop()
+        right_motorF.stop()
+        left_motorB.stop()
+        right_motorB.stop()
+    if direction == 6:
+        left_motorF.set_velocity(power, PERCENT)
+        right_motorF.set_velocity(power, PERCENT)
+        left_motorB.set_velocity(power, PERCENT)
+        right_motorB.set_velocity(power, PERCENT)
+
+        # left_motorF.spin(FORWARD)
+        # right_motorF.spin(REVERSE)
+        # left_motorB.spin(FORWARD)
+        # right_motorB.spin(REVERSE)
+
+
+        left_motorF.spin(REVERSE)
+        right_motorF.spin(REVERSE)
+        left_motorB.spin(FORWARD)
+        right_motorB.spin(FORWARD)
+        wait(duration, MSEC)
+        left_motorF.stop()
+        right_motorF.stop()
+        left_motorB.stop()
+        right_motorB.stop()
+# ...existing code...
 
 def check_mode_switch():
     global current_mode
