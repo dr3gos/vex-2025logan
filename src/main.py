@@ -113,7 +113,18 @@ def trapper_control():
 
 def autonomous():
     # !!! Autonomous code goes here !!!
-    move(6, 50, 1000)  # Move forward at 50% power for 1 second
+    # 1 = turn left, 2 = turn right, 3 = forward, 4 = backward, 5 = strafe left, 6 = strafe right
+    # example code for moving:
+    # move(3, 50, 1000)  # Move forward at 50% power for 1 second
+
+    # example code for intaking for 1 second:
+    # intake.spin(FORWARD, 50, PERCENT)
+    # spinner.spin(FORWARD, 80, PERCENT)
+    # trapper.spin_to_position(300, DEGREES, 100, PERCENT)
+    # wait(1000, MSEC)
+    # intake.stop()
+    # spinner.stop()
+    # trapper.spin_to_position(0, DEGREES, 100, PERCENT)
 
     pass
     
@@ -125,7 +136,6 @@ def driver_control():
 
 # ...existing code...
 def move(direction, power, duration):
-    # 1 = forward, 2 = backward, 3 = left, 4 = right
     # 1 = turn left, 2 = turn right, 3 = forward, 4 = backward, 5 = strafe left, 6 = strafe right
     if direction == 1:
         left_motorF.set_velocity(power, PERCENT)
